@@ -21,25 +21,12 @@ target_speed = 5
 score = 0
 font = pygame.font.SysFont(None, 36)
 
-
-# Функция для создания страшного животного
-def spawn_enemy():
-    enemy_img = pygame.image.load("img/kosm.png")
-    enemy_width = 50
-    enemy_height = 50
-    enemy_x = random.randint(0, SCREEN_WIDTH - enemy_width)
-    enemy_y = random.randint(0, SCREEN_HEIGHT - enemy_height)
-    enemy_speed_x = random.randint(-3, 3)  # Случайная скорость по оси X
-    enemy_speed_y = random.randint(-3, 3)  # Случайная скорость по оси Y
-    return {
-        "rect": pygame.Rect(enemy_x, enemy_y, enemy_width, enemy_height),
-        "img": enemy_img,
-        "speed_x": enemy_speed_x,
-        "speed_y": enemy_speed_y
-    }
-
-# Создаем список страшных животных
-enemies = [spawn_enemy() for _ in range(1)]  # Только одно страшное животное
+# Параметры животного
+animal_img = pygame.image.load("img/kosm.png")
+animal_width = 50
+animal_height = 50
+animal_x = random.randint(0, SCREEN_WIDTH - animal_width)
+animal_y = random.randint(0, SCREEN_HEIGHT - animal_height)
 
 running = True
 clock = pygame.time.Clock()
@@ -57,6 +44,10 @@ while running:
                 target_x = random.randint(0, SCREEN_WIDTH - target_width)
                 target_y = random.randint(0, SCREEN_HEIGHT - target_height)
 
+                # Перемещение животного в новую точку
+                animal_x = random.randint(0, SCREEN_WIDTH - animal_width)
+                animal_y = random.randint(0, SCREEN_HEIGHT - animal_height)
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         target_x -= target_speed
@@ -69,14 +60,8 @@ while running:
 
     screen.blit(target_img, (target_x, target_y))
 
-    # Рисуем и обновляем страшных животных
-    for enemy in enemies:
-        screen.blit(pygame.image.load("img/kosm.png"), enemy.topleft)
-
-    # Проверка столкновений с врагами
-    #for enemy in enemies:
-        #if target_img.colliderect(enemy):
-            #score -= 1  # Уменьшаем счет при столкновении с врагом
+    # Отображение животного
+    screen.blit(animal_img, (animal_x, animal_y))
 
     # Обновляем счет на экране
     score_text = font.render(f"Score: {score}", True, (0, 0, 0))
